@@ -1,10 +1,29 @@
-var express = require('express')
-var app = express()
+var express = require('express');
+var app = express();
+
+function getLanguage(acceptLanguage) {
+    var list = acceptLanguage.split(",");
+    return list[0];
+}
+
+function getSoftware(userAgent) {
+    return "softwareTest";
+}
+
+function createResult(ip, language, software) {
+    return {"ipaddress": ip,
+            "language": language,
+            "software": software};
+}
 
 app.get('/', function (req, res) {
-  res.send('Hello World!')
-})
+    var ipaddress = req.headers["x-forwarded-for"];
+    var language = getLanguage(req.headers["accept-language"]);
+    var software = getSoftware(req.headers["user-agent"]);
+    var result = createResult(ipaddress, language, software); 
+    res.send(JSON.stringify(result));
+});
 
 app.listen(8080, function () {
-  console.log('Example app listening on port 8080!')
-})
+    console.log('Example app listening on port 8080!');
+});
