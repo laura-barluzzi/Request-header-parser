@@ -7,7 +7,9 @@ function getLanguage(acceptLanguage) {
 }
 
 function getSoftware(userAgent) {
-    return "softwareTest";
+    var regExp = /\(([^)]+)\)/;
+    var matches = regExp.exec(userAgent);
+    return matches[1];
 }
 
 function createResult(ip, language, software) {
